@@ -3,14 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:get_data_provider/provider/post_provider.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // final postProvider = Provider.of<PostProvider>(context, listen: false);
   HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<PostProvider>(context,listen: false).fetchData();
+    });
+  }
   Widget build(BuildContext context) {
     return Consumer<PostProvider>(builder: ((context, value, child) {
-      DMethod.printTitle("ripus", value.fetchData().toString());
+      // DMethod.printTitle("ripus", value.fetchData().toString());
       if (value.posts.isEmpty) {
         return Center(
           child: CircularProgressIndicator(),
